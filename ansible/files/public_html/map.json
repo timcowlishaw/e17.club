@@ -1,0 +1,9 @@
+{
+  "_comment":   "Hello there! This file controls how you are presented on the map on the http://e17.club homepage. Each line in this file is a bit like an entry in a dictionary, with a word on the left of the colon (':'), and a definition on the right. To add yourself to the map, change the value of the 'visible' definition from false, to true, then edit the other lines to control how you are presented. You can find the latitude and longitude of a point on the map at http://www.latlong.net/. To add a picture, upload an image to your public_html folder, and set the value of the 'photo' definition to the filename. Look out for the quote marks and commas, they're important!",
+
+  "visible":    false,
+  "name":       "Your name as you'd like it to appear on the map",
+  "latitude":   "The latitude you'd like to appear at on the map",
+  "longitude":  "The longitude you'd like to appear at on the map",
+  "photo":      "The path to an image file you'd like to display as your photo on the map"
+}

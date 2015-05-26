@@ -1,0 +1,88 @@
+---
+- name: Sensible security defaults
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: Disallow root ssh
+      lineinfile: "dest=/etc/ssh/sshd_config state=present regexp='^PermitRootLogin' line='PermitRootLogin no'"
+      notify:
+        - restart ssh
+    - name: Allow sudo group to sudo passwordlessly
+      lineinfile: "dest=/etc/sudoers state=present regexp='^%sudo' line='%sudo ALL=(ALL:ALL) NOPASSWD: ALL'"
+    - name: Delete root account password
+      command: "passwd -d root"
+  handlers:
+    - name: "restart ssh"
+      service: 'name=sshd state=restarted'
+
+- name: Skel for new users
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: create skel public_html
+      copy: 'src=./files/public_html dest=/etc/skel/ owner=root group=root'
+
+- name: Create tim's account
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: Create tim's account as sudoer
+      user: "name=tim groups=sudo append=yes"
+    - name: Add tim's public key
+      authorized_key: "user='tim' key='http://timcowlishaw.co.uk/public_key'"
+
+- name: Some useful packages
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: Install fail2ban
+      apt: "name=fail2ban"
+    - name: Install ack
+      apt: "name=ack-grep"
+    - name: Install htp
+      apt: "name=htop"
+    - name: Install build-essential
+      apt: "name=build-essential"
+    - name: Install vim
+      apt: "name=vim"
+    - name: Install git
+      apt: "name=git"
+
+- name: Locales
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: Ensure locale exits
+      locale_gen: name=en_GB.UTF-8 state=present
+    - name: Set locale
+      command: /usr/sbin/update-locale LANG=en_GB.UTF-8 LC_ALL=en_GB.UTF-8
+
+- name: Hostname
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: Set hostname
+      hostname: "name='e17.club'"
+
+- name: MOTD
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: Copy MOTD
+      copy: "src=./files/motd dest=/etc/motd owner=root group=root"
+
+- name: Apache
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: "Install Apache"
+      apt: "name=apache2"
+    - name: "Enabel UserDir"
+      command: "a2enmod userdir"
+      notify:
+        - restart apache
+    - name: "Copy homepage files"
+      copy: "src=./files/homepage/ dest=/var/www/html owner=root group=root"
+  handlers:
+    - name: "restart apache"
+      service: "name=apache2 state=restarted"

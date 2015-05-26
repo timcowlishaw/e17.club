@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'GenW01Light', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+   font-family: 'BloggerSansBoldItalic', sans-serif;
+   font-weight: bold;
+   font-style: italic;
+}
+
+
+img {
+  width: 100%;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#overlay {
+  position: absolute;
+  bottom: 0;
+  height: auto;
+  width: auto;
+  left: 0;
+  z-index:99999;
+  box-shadow: 3px 3px 5px #666;
+  background-color: #fefefe;
+}
+
+#overlay #intro {
+  padding: 1em 1em 1em 1em;
+  margin: 0;
+}

@@ -1,0 +1,7 @@
+e17 ansible_ssh_host=e17.club ansible_ssh_user=tim
+
+[web]
+e17
+
+[web:vars]
+remote_user=tim
